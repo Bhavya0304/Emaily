@@ -1,23 +1,11 @@
-# from db.neograph.engine.query import Query
-# from db.neograph.core import Connect
-# from db.schema import EmailAccount,Account,User
-
-# user = User("Bhavya Joshi","bhavyajsh","123456","salt")
-# user1 = User("Bhavya Joshi","bhavyajsh","123456")
-# account = Account("12","Google","123","123","expiry","id",True)
-# rel = EmailAccount()
-
-# driver = Connect.Connect("neo4j://localhost","neo4j","D@rw1nPr0ject")
-# q = Query(driver,"emailydb")
-# q.UpsertNode(user)
-# q.UpsertNode(account)
-# q.AssociateNode(user,account,rel)
-
-from flask import Flask,request
+from flask import Flask,request,Response
 import sys
 import os
 from os import listdir
 from os.path import isfile,join
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
@@ -60,6 +48,9 @@ def GetController(route):
                 method = getattr(instance, action)
                 return method(request)  # pass the remaining path as arg (optional)
             else:
-                return f"⚠️ Action '{action}' not found in controller '{controller}'"
+                return Response("Action Not Found",status=400)
     
-    return f"❌ Controller '{controller}' not found"
+    return Response("Controller Not Found",status=400)
+
+
+

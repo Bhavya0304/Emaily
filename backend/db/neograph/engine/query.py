@@ -33,14 +33,46 @@ class Query:
         self.Driver: Driver = driver
         self.db = db
 
-    def UpsertNode(self, node: Objects):
-        if getattr(node, '_obj_type', None) == "Node":
-            props = str(node)
-            query = f"MERGE (n:{node.__class__.__name__} {props})"
+    def UpsertNode(self, node: Objects, merge_keys: list[str] = None):
+        try:
+            if getattr(node, '_obj_type', None) != "Node":
+                raise Exception("Object type is not 'Node'")
+
+            node_dict = node.__dict__.copy()
+            node_label = node.__class__.__name__
+
+            # Use 'id' as default merge key if none provided
+            merge_keys = merge_keys or ['id']
+
+            # Build MERGE clause using merge_keys
+            merge_conditions = []
+            for key in merge_keys:
+                if key not in node_dict:
+                    raise Exception(f"Merge key '{key}' not found in node properties")
+                merge_conditions.append(f"{key}: '{node_dict[key]}'")
+
+            merge_clause = ", ".join(merge_conditions)
+
+            # Build SET clause using remaining keys
+            set_parts = []
+            for key, value in node_dict.items():
+                if key not in merge_keys and value is not None:
+                    set_parts.append(f"n.{key} = '{value}'")
+
+            set_clause = ", ".join(set_parts) if set_parts else ""
+
+            # Construct final query
+            query = f"MERGE (n:{node_label} {{{merge_clause}}})"
+            if set_clause:
+                query += f" SET {set_clause}"
+
+            print("Generated Cypher Query:\n", query)
             summary = self.Driver.execute_query(query, database_=self.db)
             print(summary)
-        else:
-            raise Exception("Object type is not 'Node'")
+            return summary
+
+        except Exception as e:
+            print(f"🔥 Error in UpsertNode: {str(e)}")
 
     def DeleteNode(self, node: Objects):
         if getattr(node, '_obj_type', None) == "Node":
@@ -62,6 +94,7 @@ class Query:
                 f"(b:{nodeTo.__class__.__name__} {propsTo}) "
                 f"MERGE (a)-[r:{relType} {relProps}]->(b)"
             )
+            print(query)
             self.Driver.execute_query(query, database_=self.db)
         else:
             raise Exception("Invalid types for nodes or relationship")
