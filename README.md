@@ -1,114 +1,134 @@
-<p align="center">
-  <a href="" rel="noopener">
- <img width=200px height=200px src="https://i.imgur.com/6wj0hh6.jpg" alt="Project logo"></a>
-</p>
+# 📬 Emaily — AI-Powered Email Categorizer
 
-<h3 align="center">Project Title</h3>
-
-<div align="center">
-
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kylelobo/The-Documentation-Compendium.svg)](https://github.com/kylelobo/The-Documentation-Compendium/pulls)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
-
-</div>
+**Emaily** is an open-source project that automatically categorizes and organizes Gmail inboxes using real-time webhooks and Groq-hosted LLaMA 3 70B. It's built on a custom MVC backend in Python, uses a graph database for category relationships, and processes tasks asynchronously via Celery with RabbitMQ.
 
 ---
 
-<p align="center"> Few lines describing your project.
-    <br> 
-</p>
+## 🧠 Features
 
-## 📝 Table of Contents
+- 🔐 Google OAuth for authentication
+- 📥 Listens to incoming emails via Gmail Pub/Sub
+- 🧠 Sends emails to Groq-hosted LLaMA 3 70B for intelligent classification
+- 🗂️ Creates Gmail labels dynamically if needed
+- 📤 Moves emails to matched folders automatically
+- 📊 Stores user-defined categories in Neo4j
+- 🧵 Uses Celery for background processing
 
-- [About](#about)
-- [Getting Started](#getting_started)
-- [Deployment](#deployment)
-- [Usage](#usage)
-- [Built Using](#built_using)
-- [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
-- [Authors](#authors)
-- [Acknowledgments](#acknowledgement)
+---
 
-## 🧐 About <a name = "about"></a>
+## 💡 Tech Stack
 
-Write about 1-2 paragraphs describing the purpose of your project.
+| Layer             | Technology                     |
+|------------------|--------------------------------|
+| Backend          | Python (Flask + custom MVC)    |
+| Task Queue       | Celery + RabbitMQ (Dockerized) |
+| LLM              | Groq Cloud (LLaMA 3 70B)        |
+| Database         | Neo4j (Graph DB)               |
+| OAuth            | Google (Gmail only)            |
+| Email API        | Gmail API + Pub/Sub Webhooks   |
+| Frontend (TODO)  | Angular                        |
+| Containerization | Docker                         |
 
-## 🏁 Getting Started <a name = "getting_started"></a>
+---
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See [deployment](#deployment) for notes on how to deploy the project on a live system.
-
-### Prerequisites
-
-What things you need to install the software and how to install them.
-
-```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you how to get a development env running.
-
-Say what the step will be
+## 📁 Project Structure
 
 ```
-Give the example
+emaily/
+├── app/
+│   ├── controllers/       # Route handlers
+│   ├── services/          # Business logic
+│   ├── tasks/             # Celery workers
+│   ├── models/            # Data and graph models
+│   ├── llm/               # Groq integration
+│   ├── config.py          # App configuration
+│   └── app.py             # Flask entrypoint
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+└── README.md
 ```
 
-And repeat
+---
 
-```
-until finished
-```
+## ⚙️ Setup & Installation
 
-End with an example of getting some data out of the system or using it for a little demo.
+### 1. Clone the repository
 
-## 🔧 Running the tests <a name = "tests"></a>
-
-Explain how to run the automated tests for this system.
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+```bash
+git clone https://github.com/yourusername/emaily.git
+cd emaily
 ```
 
-### And coding style tests
+### 2. Setup Python environment
 
-Explain what these tests test and why
-
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
 ```
-Give an example
+
+### 3. Start RabbitMQ and Celery
+
+```bash
+docker-compose up -d  # starts RabbitMQ
+celery -A app.tasks.worker worker --loglevel=info
 ```
 
-## 🎈 Usage <a name="usage"></a>
+### 4. Configure `.env`
 
-Add notes about how to use the system.
+```env
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+GMAIL_WEBHOOK_SECRET=
+NEO4J_URI=
+NEO4J_USER=
+NEO4J_PASSWORD=
+GROQ_API_KEY=
+```
 
-## 🚀 Deployment <a name = "deployment"></a>
+### 5. Run Flask App
 
-Add additional notes about how to deploy this on a live system.
+```bash
+python app.py
+```
 
-## ⛏️ Built Using <a name = "built_using"></a>
+---
 
-- [MongoDB](https://www.mongodb.com/) - Database
-- [Express](https://expressjs.com/) - Server Framework
-- [VueJs](https://vuejs.org/) - Web Framework
-- [NodeJs](https://nodejs.org/en/) - Server Environment
+## ✅ Completed
 
-## ✍️ Authors <a name = "authors"></a>
+- [x] Google OAuth login
+- [x] Gmail webhook integration
+- [x] LLM-based email classification (Groq)
+- [x] Gmail folder creation and email sorting
+- [x] Neo4j graph-based category persistence
+- [x] Celery async task processing
 
-- [@kylelobo](https://github.com/kylelobo) - Idea & Initial work
+---
 
-See also the list of [contributors](https://github.com/kylelobo/The-Documentation-Compendium/contributors) who participated in this project.
+## 🚧 TODO
 
-## 🎉 Acknowledgements <a name = "acknowledgement"></a>
+- [ ] Angular frontend UI
+- [ ] Outlook integration (Microsoft Graph API)
+- [ ] Hosting and deployment pipeline
+- [ ] Edge case handling and retries
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- References
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to fork the repo, create issues, or submit PRs. Ideas, bugs, and improvements all help.
+
+---
+
+## 📄 License
+
+MIT License
+
+---
+
+## ✉️ Contact
+
+For questions, ideas, or collaboration, feel free to reach out via GitHub.
+
+---
