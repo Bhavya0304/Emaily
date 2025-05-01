@@ -157,6 +157,49 @@ class Query:
         result = self.Driver.execute_query(query, database_=self.db)
         return result
 
+    def GetRelatedNodesWithProps(
+    self,
+    node: Objects,
+    relType: str,
+    direction: str = "OUTGOING",
+    depth: int = 1,
+    relProps: Objects = None
+    ):
+        if getattr(node, '_obj_type', None) != "Node":
+            raise Exception("Object type is not 'Node'")
+        if relProps and getattr(relProps, '_obj_type', None) != "Relationship":
+            raise Exception("relProps object type is not 'Relationship'")
+
+        props = str(node)
+        label = node.__class__.__name__
+        depth_clause = f"*1..{depth}" if depth > 1 else ""
+
+        # Convert relProps to WHERE clause
+        rel_prop_clause = ""
+        if relProps:
+            # Assuming relProps uses __dict__ or similar logic like node
+            rel_props_str = str(relProps).strip("{}").replace(":","=")
+            if rel_props_str:
+                rel_conditions = [f"r.{cond.strip()}" for cond in rel_props_str.split(",")]
+                rel_prop_clause = "WHERE " + " AND ".join(rel_conditions)
+
+        # Build the Cypher pattern
+        if direction == "OUTGOING":
+            pattern = f"(n:{label} {props})-[r:{relType}{depth_clause}]->(related)"
+        elif direction == "INCOMING":
+            pattern = f"(n:{label} {props})<-[r:{relType}{depth_clause}]-(related)"
+        else:
+            pattern = f"(n:{label} {props})-[r:{relType}{depth_clause}]-(related)"
+
+        query = (
+            f"MATCH {pattern} "
+            f"{rel_prop_clause} "
+            f"RETURN DISTINCT related"
+        )
+
+        result = self.Driver.execute_query(query, database_=self.db)
+        return result
+
     def GetRelationshipsBetween(self, nodeFrom: Objects, nodeTo: Objects, relType: Optional[str] = None):
         if any(getattr(n, '_obj_type', None) != "Node" for n in [nodeFrom, nodeTo]):
             raise Exception("Both objects must be of type 'Node'")
