@@ -10,7 +10,7 @@ services:
       - ./logs:/app/logs  # ✅ Mount logs folder
     depends_on:
       - rabbit
-    command: flask run --host=0.0.0.0
+    command: flask run --host=0.0.0.0 --port=80
 
   celery:
     build: .

@@ -8,7 +8,7 @@ from db.neograph.engine.query import Query
 
 def get_valid_token(token_info,query:Query):
     if is_expired(token_info["tokenexpiry"]):
-        print(f"Refreshing token for {token_info["name"]}")
+        print(f"Refreshing token for {token_info['name']}")
         new_token = refresh_token(token_info["name"], token_info["refreshtoken"])
         if new_token:
             token_info["token"] = new_token["access_token"]
