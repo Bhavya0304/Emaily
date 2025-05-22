@@ -123,7 +123,7 @@ Contributions are welcome! Feel free to fork the repo, create issues, or submit 
 
 ## 📄 License
 
-MIT License
+GPL - 3.0 (Because I Love GNU)
 
 ---
 
