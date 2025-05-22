@@ -4,7 +4,7 @@ services:
     container_name: flask_app
     env_file: .env
     ports:
-      - "5000:5000"
+      - "80:80"
     volumes:
       - .:/app
       - ./logs:/app/logs  # ✅ Mount logs folder
