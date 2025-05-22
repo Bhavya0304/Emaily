@@ -6,10 +6,11 @@ from db.neograph.core import Connect
 from db.neograph.engine.query import Query
 from ..models.category import Category,UserCategories
 from ..models.user import User
+from helper.logger import Logger
 
 class categoryController:
     def __init__(self):
-        pass
+        self.loggger = Logger()
 
     def get_query(self):
         driver = Connect.Connect(
@@ -17,12 +18,11 @@ class categoryController:
             os.getenv("NEO4J_USER"),
             os.getenv("NEO4J_PASSWORD")
         )
-        return Query(driver, "emailydb")
+        return Query(driver, os.getenv("NEO4J_DB"))
 
     @auth.Authuenticate
     def get(self, req:Request):
         try:
-            print(self.payload)
             user_id = self.payload.get("id")
             user = User()
             user.id = user_id
@@ -38,6 +38,7 @@ class categoryController:
             return Response(json.dumps({"status": "success", "categories": cat_data}),200,mimetype="application/json")
 
         except Exception as e:
+            self.loggger.Log("API",str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -68,6 +69,7 @@ class categoryController:
             return Response(json.dumps({"status": "created", "category": category.__dict__}), 201,mimetype="application/json")
 
         except Exception as e:
+            self.loggger.Log("API",str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -90,6 +92,7 @@ class categoryController:
             return Response(json.dumps({"status": "updated", "category": category.__dict__}),200,mimetype="application/json")
 
         except Exception as e:
+            self.loggger.Log("API",str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -114,5 +117,6 @@ class categoryController:
             return Response(json.dumps({"status": "deleted", "category_id": category_id}),200,mimetype="application/json")
 
         except Exception as e:
+            self.loggger.Log("API",str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
         

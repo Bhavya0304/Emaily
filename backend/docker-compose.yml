@@ -1,0 +1,34 @@
+services:
+  flask:
+    build: .
+    container_name: flask_app
+    env_file: .env
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - ./logs:/app/logs  # ✅ Mount logs folder
+    depends_on:
+      - rabbit
+    command: flask run --host=0.0.0.0
+
+  celery:
+    build: .
+    container_name: celery_worker
+    env_file: .env
+    command: celery -A services.categorization_service.categorizer worker --loglevel=info
+    depends_on:
+      - rabbit
+    volumes:
+      - .:/app
+      - ./logs:/app/logs  # ✅ Mount logs folder
+
+  rabbit:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest

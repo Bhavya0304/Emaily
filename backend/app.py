@@ -1,17 +1,21 @@
+import sys
+
+sys.dont_write_bytecode = True
+
+
 from flask import Flask,request,Response
 import sys
 import os
 from os import listdir
 from os.path import isfile,join
-from dotenv import load_dotenv
-
-load_dotenv()
-
+from helper import load_env
 app = Flask(__name__)
+
+load_env.Load()
 
 @app.route('/')
 def Home():
-    return 'Home'
+    return "Hello World"
 
 
 @app.route('/<path:route>',methods = ['POST','GET'])

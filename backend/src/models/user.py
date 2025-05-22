@@ -17,7 +17,7 @@ def GetUser(id):
     usr = User()
     usr.id = id
     driver = Connect.Connect(os.getenv('NEO4J_URL'),os.getenv('NEO4J_USER'),os.getenv('NEO4J_PASSWORD'))
-    query = Query(driver,"emailydb")
+    query = Query(driver,os.getenv("NEO4J_DB"))
     result = query.GetNode(usr)
     return result[0][0].data()['n']
 
