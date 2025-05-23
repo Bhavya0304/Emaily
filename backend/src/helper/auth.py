@@ -1,5 +1,5 @@
 import jwt
-from jwt.exceptions import ExpiredSignatureError
+from jwt import ExpiredSignatureError
 import sys
 from flask import Request,Response,json
 import os
