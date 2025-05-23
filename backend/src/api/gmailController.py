@@ -29,7 +29,7 @@ class gmailController:
     
     @auth.Authuenticate
     def connect(self,req):
-        return Response(json.dumps({"url":f"https://accounts.google.com/o/oauth2/auth?client_id={os.getenv("GOOGLE_CLIENT_ID")}&response_type=code&scope=https://www.googleapis.com/auth/gmail.modify+https://www.googleapis.com/auth/cloud-platform+profile+email&redirect_uri={os.getenv('GOOGLE_CALLBACK_URL')}&state={self.payload["id"]}&access_type=offline&prompt=consent"}),200,mimetype="application/json")
+        return Response(json.dumps({"url":f"https://accounts.google.com/o/oauth2/auth?client_id={os.getenv('GOOGLE_CLIENT_ID')}&response_type=code&scope=https://www.googleapis.com/auth/gmail.modify+https://www.googleapis.com/auth/cloud-platform+profile+email&redirect_uri={os.getenv('GOOGLE_CALLBACK_URL')}&state={self.payload['id']}&access_type=offline&prompt=consent"}),200,mimetype="application/json")
         
     def callback(self,req:Request):
         try:
@@ -41,7 +41,7 @@ class gmailController:
                 "client_secret": os.getenv("GOOGLE_SECRET"),
                 "code": code,
                 "grant_type": "authorization_code",
-                "redirect_uri": "http://localhost:4567/gmail/callback"
+                "redirect_uri": os.getenv('GOOGLE_CALLBACK_URL')
             }
         
             res = requests.post(token_url, data=data)
