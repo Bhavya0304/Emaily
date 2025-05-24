@@ -21,7 +21,11 @@ def get_valid_token(token_info,query:Query):
     return token_info["token"]
 
 def is_expired(expires_at):
-    return time.time() > expires_at - 200 
+    try:
+        return time.time() > float(expires_at) - 200
+    except Exception as e:
+        print(f"[is_expired error] expires_at: {expires_at}, error: {e}")
+        return True
 
 def refresh_token(provider, refresh_token):
     if provider == "Google":
