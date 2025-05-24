@@ -15,8 +15,8 @@ def get_valid_token(token_info,query:Query):
             token_info["tokenexpiry"] = new_token["expires_at"]
             act = Account()
             act.id = token_info["id"]
-            act["token"] = token_info["token"]
-            act["tokenexpiry"] = token_info["tokenexpiry"]
+            act.token = token_info["token"]
+            act.tokenexpiry = token_info["tokenexpiry"]
             query.UpsertNode(act)
     return token_info["token"]
 
