@@ -57,12 +57,12 @@ def Categorize(email_data: dict, categories: list, min_threshold: int = 30,messa
         print(result,file=sys.stdout)
         category = result['category']
         if(category.lower() != "na"):
-            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data["title"]} is Categorized To {category}")
+            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data['title']} is Categorized To {category}")
             account = get_access_token(account_id)
             token = get_valid_token(account,get_query())
             categorize_and_move_email(token, message_id, category)
         else:
-            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data["title"]} is Found no relavent category")
+            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data['title']} is Found no relavent category")
         return result
     except json.JSONDecodeError:
         return {"category": "NA", "match_percentage": 0}
