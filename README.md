@@ -78,13 +78,24 @@ celery -A app.tasks.worker worker --loglevel=info
 ### 4. Configure `.env`
 
 ```env
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
-GMAIL_WEBHOOK_SECRET=
-NEO4J_URI=
+NEO4J_URL=
 NEO4J_USER=
+#NEO4J_PASSWORD=
 NEO4J_PASSWORD=
+NEO4J_DB=
+SECRET_KEY=
+GOOGLE_CLIENT_ID=
+GOOGLE_PROJECT_ID=
+GOOGLE_AUTH_URI=
+GOOGLE_TOKEN_URI=
+GOOGLE_X509_CERT_URI=
+GOOGLE_CALLBACK_URL=
+GOOGLE_SECRET=
 GROQ_API_KEY=
+BROKER_URL=
+FLASK_PORT=80
+RABBITMQ_PASS=
+RABBITMQ_USERNAME=
 ```
 
 ### 5. Run Flask App
@@ -109,9 +120,10 @@ python app.py
 ## 🚧 TODO
 
 - [ ] Angular frontend UI
-- [ ] Outlook integration (Microsoft Graph API)
-- [ ] Hosting and deployment pipeline
-- [ ] Edge case handling and retries
+- [ ] Outlook integration (Microsoft Graph API) (First Focusing on Gmail Once Completed Can Start With Outlook)
+- [ 50% ] Hosting and deployment pipeline
+- [ 50% ] Edge case handling and retries
+- [ ] Gmail Watch Expires Weekly To Need to Run Cron Job To Refresh It 
 
 ---
 

@@ -1,0 +1,54 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Emaily</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item"><a class="nav-link" routerLink="/login">Login</a></li>
+        <li class="nav-item"><a class="nav-link" routerLink="/register">Register</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero text-center">
+  <div class="container">
+    <h1>All your email insights, organized.</h1>
+    <p class="lead">Emaily connects to your Gmail or Outlook accounts and helps you categorize messages effortlessly.</p>
+    <div class="btn-group">
+      <button class="btn btn-primary btn-lg" (click)="goRegister()">Get Started</button>
+      <a class="btn btn-outline-light btn-lg" routerLink="/connect">Connect Email</a>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="feature-section bg-light">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-4 mb-4">
+        <h3>Secure Registration & Login</h3>
+        <p>Create an account or log in to get started with Emaily.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h3>Connect Email Accounts</h3>
+        <p>Easily connect your Gmail or Outlook accounts to import messages.</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h3>Organize Categories</h3>
+        <p>Manage categories (Create, Read, Update, Delete) to keep your inbox neatly organized.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Optional Footer -->
+<footer class="bg-light text-center py-4">
+  <div class="container">
+    <span class="text-muted">&copy; 2025 Emaily. All rights reserved.</span>
+  </div>
+</footer>

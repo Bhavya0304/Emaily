@@ -10,7 +10,7 @@ Your job is to:
 
 Compare the email content (title, sender, and body) with all provided categories.
 
-Select the most relevant category based on semantic similarity.
+Select the most relevant category based on semantic similarity.strictly select from given list and do not create new category
 
 Return strictly a JSON object with the following structure:
 

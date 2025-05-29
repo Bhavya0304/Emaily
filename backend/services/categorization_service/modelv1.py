@@ -9,6 +9,7 @@ from db.neograph.engine.query import Query
 from db.neograph.core import Connect
 from src.models.mailaccount import Account
 from helper.token_helper import get_valid_token
+from helper.logger import SingletonLogger,LogTypes
 
 def get_gmail_service(access_token: str):
     creds = Credentials(token=access_token)
@@ -34,6 +35,7 @@ class GroqAPI():
     ],
     model="llama3-8b-8192",
 )
+        SingletonLogger.get_logger().Log(LogTypes.LLM,chat_completion.choices[0].message.content)
         return chat_completion.choices[0].message.content
 
 
@@ -55,9 +57,12 @@ def Categorize(email_data: dict, categories: list, min_threshold: int = 30,messa
         print(result,file=sys.stdout)
         category = result['category']
         if(category.lower() != "na"):
+            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data["title"]} is Categorized To {category}")
             account = get_access_token(account_id)
             token = get_valid_token(account,get_query())
             categorize_and_move_email(token, message_id, category)
+        else:
+            SingletonLogger.get_logger().Log(LogTypes.Agent,f"Email With Title:{email_data["title"]} is Found no relavent category")
         return result
     except json.JSONDecodeError:
         return {"category": "NA", "match_percentage": 0}

@@ -12,12 +12,12 @@ from db.neograph.core import Connect
 import base64
 from services.categorization_service.categorizer import categorize_email
 from helper.token_helper import get_valid_token
-from helper.logger import Logger
+from helper.logger import LogTypes, SingletonLogger
 
 class gmailController:
     def __init__(self):
         self.query = self.get_query()
-        self.loggger = Logger()
+        self.logger = SingletonLogger().get_logger()
 
     def get_query(self):
         driver = Connect.Connect(
@@ -87,7 +87,7 @@ class gmailController:
             else:
                 return Response(json.dumps({"data":"failure"}),500,mimetype="application/json")
         except Exception as e:
-            self.loggger.Log("Gmail",str(e))
+            self.logger.Log(LogTypes.Gmail,str(e))
             return Response(json.dumps({"data":"failure"}),500,mimetype="application/json")
     
     def get_user_info(self,access_token):
@@ -191,10 +191,9 @@ class gmailController:
                         messages.append(msg.get("id"))
 
                 if messages:
-                    with open(f"{email.replace('@', '_')}_emails.txt", "a") as f:
-                        for msg_id in messages:
-                            self.fetch_and_save_email(msg_id,access_token,email,account_data['id'])
-                    print(f"📝 Dumped {len(messages)} message IDs to file")
+                    for msg_id in messages:
+                        self.fetch_and_save_email(msg_id,access_token,email,account_data['id'])
+                    print(f"📝 Pushed {len(messages)} message IDs to Queue")
                 else:
                     print("📭 No new messages to log")
             else:
@@ -208,7 +207,7 @@ class gmailController:
             return Response(json.dumps({"data": "OK"}), 200, mimetype="application/json")
 
         except Exception as e:
-            self.loggger.Log("Gmail",str(e))
+            self.logger.Log(LogTypes.Gmail,str(e))
             return Response(json.dumps({"data": "Internal Server Error"}), 200, mimetype="application/json")
     
     def fetch_and_save_email(self,message_id, token, user_email,account_id):
@@ -253,7 +252,7 @@ class gmailController:
             print(f"📨 Sent email {message_id} to categorization task (task_id={task.id})")
 
         except Exception as e:
-            self.loggger.Log("Gmail",str(e))
+            self.logger.Log(LogTypes.Gmail,str(e))
             print(f"🔥 Error fetching message {message_id}: {str(e)}")
     
     def getcategoriesmyemail(self,req:Request):

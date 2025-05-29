@@ -9,9 +9,12 @@ import os
 from os import listdir
 from os.path import isfile,join
 from helper import load_env
+from helper.logger import SingletonLogger,LogTypes
 app = Flask(__name__)
 
 load_env.Load()
+# instantiate Default Logger 
+SingletonLogger()
 
 @app.route('/')
 def Home():
@@ -20,8 +23,12 @@ def Home():
 
 @app.route('/<path:route>',methods = ['POST','GET'])
 def controller(route):
-    return GetController(route)
-
+    try:
+        return GetController(route)
+    except Exception as ex:
+        print("Global Error")
+        SingletonLogger().get_logger().Log(LogTypes.Global,str(ex))
+        return Response("Something Went Wrong",status=500)
 
 def PreloadController():
     path = os.path.abspath(os.curdir)

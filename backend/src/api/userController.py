@@ -10,7 +10,7 @@ from src.models.user import User
 import os
 import jwt
 from ..helper import auth
-from helper.logger import Logger
+from helper.logger import LogTypes, SingletonLogger
 
 
 
@@ -19,7 +19,7 @@ class userController:
     def __init__(self):
         self.driver = Connect.Connect(os.getenv('NEO4J_URL'),os.getenv('NEO4J_USER'),os.getenv('NEO4J_PASSWORD'))
         self.query = Query(self.driver,os.getenv("NEO4J_DB"))
-        self.loggger = Logger()
+        self.logger = SingletonLogger().get_logger()
     def login(self, req):
         try:
             
@@ -62,7 +62,7 @@ class userController:
             else:
                 return Response(json.dumps({"Message":"Invalid Credentails!"}),401,mimetype="application/json")
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"Message":"Something Went Wrong!"}),500,mimetype="application/json")
 
 
@@ -78,7 +78,7 @@ class userController:
             self.query.UpsertNode(userData)
             return Response(json.dumps({"Message":"Registration Successfull!"}),200,mimetype="application/json")
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"Message":"Something Went Wrong!"}),500,mimetype="application/json")
     
 

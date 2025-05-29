@@ -6,11 +6,11 @@ from db.neograph.core import Connect
 from db.neograph.engine.query import Query
 from ..models.category import Category,UserCategories
 from ..models.user import User
-from helper.logger import Logger
+from helper.logger import LogTypes, SingletonLogger
 
 class categoryController:
     def __init__(self):
-        self.loggger = Logger()
+        self.logger = SingletonLogger().get_logger()
 
     def get_query(self):
         driver = Connect.Connect(
@@ -38,7 +38,7 @@ class categoryController:
             return Response(json.dumps({"status": "success", "categories": cat_data}),200,mimetype="application/json")
 
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -69,7 +69,7 @@ class categoryController:
             return Response(json.dumps({"status": "created", "category": category.__dict__}), 201,mimetype="application/json")
 
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -92,7 +92,7 @@ class categoryController:
             return Response(json.dumps({"status": "updated", "category": category.__dict__}),200,mimetype="application/json")
 
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
 
     @auth.Authuenticate
@@ -117,6 +117,6 @@ class categoryController:
             return Response(json.dumps({"status": "deleted", "category_id": category_id}),200,mimetype="application/json")
 
         except Exception as e:
-            self.loggger.Log("API",str(e))
+            self.logger.Log(LogTypes.API,str(e))
             return Response(json.dumps({"status": "error", "message": str(e)}), 500,mimetype="application/json")
         
