@@ -20,4 +20,4 @@ def categorize_email(email_data, categories, min_threshold=30,message_id = None,
         result = Categorize(email_data, categories, min_threshold,message_id,account_id)
         return result
     except Exception as e:
-        SingletonLogger.get_logger().Log(LogTypes.Gmail,str(e))
+        SingletonLogger().get_logger().Log(LogTypes.Gmail,str(e))
