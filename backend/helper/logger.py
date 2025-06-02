@@ -45,7 +45,7 @@ class Logger:
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
         with open(final_path,'a+') as fp:
-            fp.write("\n\n----------------------\n" + message + "\n------------------------\n\n")
+            fp.write("\n\n----------------------\n" + "Time: " +  datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + "\n" + message + "\n------------------------\n\n")
 
 
         # extra events to be added to logger
