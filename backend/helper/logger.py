@@ -9,6 +9,7 @@ class LogTypes(Enum):
     Agent=3
     Gmail=4
     Global=5
+    CRON=6
 
 class SingletonLogger:
     _instance = None
