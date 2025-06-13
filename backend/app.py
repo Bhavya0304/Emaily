@@ -4,6 +4,7 @@ sys.dont_write_bytecode = True
 
 
 from flask import Flask,request,Response
+from flask_cors import CORS
 import sys
 import os
 from os import listdir
@@ -11,6 +12,7 @@ from os.path import isfile,join
 from helper import load_env
 from helper.logger import SingletonLogger,LogTypes
 app = Flask(__name__)
+CORS(app,resources={r"/*":{"origins": "joshibhavya.com"}})
 
 load_env.Load()
 # instantiate Default Logger 
