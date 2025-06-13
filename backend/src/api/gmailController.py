@@ -59,7 +59,6 @@ class gmailController:
                     tokenexpiry=token["expires_in"],
                     createdon= datetime.date.today(),
                     refreshtoken=token["refresh_token"],
-                    refreshtokenexpiry=token["refresh_token_expires_in"],
                     emailid=usergmailinfo["email"]
                 )
 
