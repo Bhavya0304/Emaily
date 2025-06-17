@@ -13,10 +13,7 @@ from helper import load_env
 from helper.logger import SingletonLogger,LogTypes
 app = Flask(__name__)
 
-def custom_cors_origin(origin):
-    return origin.endswith(".joshibhavya.com") or origin == "https://joshibhavya.com"
-
-CORS(app,origins=custom_cors_origin)
+CORS(app, resources={r"/*": {"origins": "https://emaily.joshibhavya.com"}})
 
 load_env.Load()
 # instantiate Default Logger 
