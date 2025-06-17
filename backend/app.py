@@ -12,7 +12,7 @@ from os.path import isfile,join
 from helper import load_env
 from helper.logger import SingletonLogger,LogTypes
 app = Flask(__name__)
-CORS(app,resources={r"/*":{"origins": "joshibhavya.com"}})
+CORS(app,resources={r"/*":{"origins": "https://joshibhavya.com"}})
 
 load_env.Load()
 # instantiate Default Logger 
