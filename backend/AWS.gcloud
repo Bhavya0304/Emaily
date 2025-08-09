@@ -1,0 +1,4 @@
+gcloud pubsub topics create emaily-webhook
+
+gcloud pubsub subscriptions create emaily-subscription --topic=emaily-webhook --push-endpoint=https://2f20-152-58-35-3.ngrok-free.app/gmail/gmailhook
+

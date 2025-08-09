@@ -1,1 +1,2 @@
+-- 0 0 * * 0
 docker exec -d flask_app sh -c "python -m services.cron_jobs.refresh_webhooks >> /app/services/cron_jobs/logfile.log 2>&1"

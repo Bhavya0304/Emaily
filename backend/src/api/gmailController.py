@@ -59,6 +59,7 @@ class gmailController:
                     tokenexpiry=token["expires_in"],
                     createdon= datetime.date.today(),
                     refreshtoken=token["refresh_token"],
+                    refreshtokenexpiry=token["refresh_token_expires_in"],
                     emailid=usergmailinfo["email"]
                 )
 
@@ -115,7 +116,7 @@ class gmailController:
     def registerWebhookForGmail(self,accessToken,email):
         webhook_url = "https://www.googleapis.com/gmail/v1/users/me/watch"
         headers = {"Authorization": f"Bearer {accessToken}", "Content-Type": "application/json"}
-        data = {"topicName": "projects/gen-lang-client-0936859336/topics/emaily-webhook", "labelIds": ["INBOX"]}
+        data = {"topicName": os.getenv("GOOGLE_GMAIL_TOPIC"), "labelIds": ["INBOX"]}
     
         res = requests.post(webhook_url, headers=headers, json=data)
         historydata = res.json()
